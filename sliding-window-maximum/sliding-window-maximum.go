@@ -37,28 +37,21 @@ func maxSlidingWindow(nums []int, k int) []int {
 	ans := []int{}
 	d := newDeque()
 	for i := 0; i < k; i++ {
-		for d.Len() > 0 && d.Back() <= nums[i] {
+		for d.Len() > 0 && d.Back() < nums[i] {
 			d.PopBack()
 		}
 		d.Push(nums[i])
 	}
-	ans = append(ans, max(d.Front(), d.Back()))
+	ans = append(ans, d.Front())
 	for i := k; i < len(nums); i++ {
 		if d.Front() == nums[i-k] {
 			d.PopFront()
 		}
-		for d.Len() > 0 && d.Back() <= nums[i] {
+		for d.Len() > 0 && d.Back() < nums[i] {
 			d.PopBack()
 		}
 		d.Push(nums[i])
-		ans = append(ans, max(d.Front(), d.Back()))
+		ans = append(ans, d.Front())
 	}
 	return ans
-}
-
-func max(i, j int) int {
-	if i > j {
-		return i
-	}
-	return j
 }
